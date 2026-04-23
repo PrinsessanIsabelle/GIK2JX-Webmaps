@@ -156,8 +156,8 @@
     */               
                 var pointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px'>")
                    
-                var coords = 
-            [
+                var polylineCoords = 
+                [
 				[60.621367454927025, 15.622346847045435],
                 [60.621697274780814, 15.62213328942957],
                 [60.62160414951677, 15.621152506306174 ],
@@ -169,12 +169,37 @@
                 [60.623016095059484, 15.61817147455406],
                 [60.622969534364955, 15.618052831433744],
                 [60.622969534364955, 15.617491254000441]
-            ];
+                ];
 
-				var lineFeature = L.polyline(coords, {color: 'yellow'}).addTo(mymap).bindPopup("<h3>Vägen till gula måsen</h3><img src='{{ url_for('static', filename='img/BabeZiggy.png') }}' width='150px'>");
-            });
+				var lineFeature = L.polyline(polylineCoords, {color: 'yellow'}).addTo(mymap).bindPopup("<h3>Vägen till gula måsen</h3><img src='{{ url_for('static', filename='img/BabeZiggy.png') }}' width='150px'>");
             
+            var polygonCoords = 
+            [[
+               61.147842439613754,
+               15.651735831536143
+            ],
+            [
+              61.144205514498594,
+              15.652395398858516
+            ],
+            [
+              61.143341571580805,
+              15.664735054868345
+            ],
+            [
+              61.14806970830725,
+              15.65644494526444
+            ],
+            [
+              61.147842439613754,
+              15.651735831536143
+            ]];
 
+            var polygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>Stugan</h3><img src='{{ url_for('static', filename='img/stugan.png') }}' width='150px'>");
+
+            // zoom the map to the polygon
+            mymap.fitBounds(polygon.getBounds());
+});
             
        </script>
     </body>
