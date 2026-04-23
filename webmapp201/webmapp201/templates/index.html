@@ -49,7 +49,7 @@
        <div id="side-bar" class="col-md-3"><h2>My Map</h2>
             <button id="l1">layer1</button>
             <button id="l2">layer2</button>
-            <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
+            <button id="btnFalun" class="btn btn-primary btn-block">ZoomToFalun</button>
   
        </div>
        
@@ -100,7 +100,7 @@
                 // Popup and marker
                 popb = L.marker([60.48868922712431, 15.431371459960938],{icon: blackIcon}).addTo(mymap).bindPopup('Intro to Leaflet');
                 
-                popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src='{{ url_for('static', filename='img/museum.jpg') }}' width='150px'>")
+                popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src='{{ url_for("static", filename="img/museum.jpg") }}' width='150px'>")
                 
                                 
                 document.getElementById("l1").addEventListener("click", sweden);
