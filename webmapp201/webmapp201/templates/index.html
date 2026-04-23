@@ -3,21 +3,21 @@
     <head>
         <meta charset="UTF-8">
         <title>Webmapp 201</title>
-        <link rel="stylesheet" href="src/leaflet.css">
-        <link rel="stylesheet" href="src/css/bootstrap.css">
-        <link rel="stylesheet" href="src/plugins/L.Control.Zoomslider.css">
-        <link rel="stylesheet" href="src/plugins/L.Control.Sidebar.css">
-        <link rel="stylesheet" href="dist/MarkerCluster.css">
-        <link rel="stylesheet" href="dist/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="{{ url_for('src_files', filename='leaflet.css') }}">
+        <link rel="stylesheet" href="{{ url_for('src_files', filename='css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('src_files', filename='plugins/L.Control.Zoomslider.css') }}">
+        <link rel="stylesheet" href="{{ url_for('src_files', filename='plugins/L.Control.Sidebar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('dist_files', filename='MarkerCluster.css') }}">
+        <link rel="stylesheet" href="{{ url_for('dist_files', filename='MarkerCluster.Default.css') }}">
         
         
-        <script src="src/leaflet-src.js"></script>
-        <script src="src/jquery-3.6.0.min.js"></script>
-        <script src="src/turf.min.js" charset="utf-8"></script>
-        <script src="src/plugins/L.Control.Zoomslider.js"></script>
-        <script src="src/plugins/L.Control.Sidebar.js"></script>
-        <script src='swedish_counties.js'></script>
-        <script src='countries.js'></script>
+        <script src="{{ url_for('src_files', filename='leaflet-src.js') }}"></script>
+        <script src="{{ url_for('src_files', filename='jquery-3.6.0.min.js') }}"></script>
+        <script src="{{ url_for('src_files', filename='turf.min.js') }}" charset="utf-8"></script>
+        <script src="{{ url_for('src_files', filename='plugins/L.Control.Zoomslider.js') }}"></script>
+        <script src="{{ url_for('src_files', filename='plugins/L.Control.Sidebar.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/swedish_counties.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/countries.js') }}"></script>
 
         
         
@@ -91,7 +91,7 @@
                                
                                       
                 var blackIcon = L.icon({
-                    iconUrl: 'map-marker.svg',
+                    iconUrl: "{{ url_for('static', filename='img/map-marker.svg') }}",
                     iconSize:     [32, 37], // size of the icon
                     iconAnchor:   [32, 37], // point of the icon which will correspond to marker's location
                     popupAnchor:  [0, -30] // point from which the popup should open relative to the iconAnchor
@@ -100,7 +100,7 @@
                 // Popup and marker
                 popb = L.marker([60.48868922712431, 15.431371459960938],{icon: blackIcon}).addTo(mymap).bindPopup('Intro to Leaflet');
                 
-                popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src= 'img/museum.jpg'width='150px'>")
+                popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src='{{ url_for('static', filename='img/museum.jpg') }}' width='150px'>")
                 
                                 
                 document.getElementById("l1").addEventListener("click", sweden);
