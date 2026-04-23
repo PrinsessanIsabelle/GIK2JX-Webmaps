@@ -152,7 +152,8 @@
 
                 var samplegeol = L.geoJSON(samplegeo, {style:{color:'yellow', dashArray:'5,5', fillOpacity:0.1}}).addTo(mymap);
     */               
-                   pointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px'>")
+
+                pointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px'>")
   
             });
             
