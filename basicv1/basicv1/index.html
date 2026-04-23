@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Map</title>
+
+    <link rel="stylesheet" href="src/leaflet.css">
+    <link rel="stylesheet" href="src/css/bootstrap.css">
+
+    <script src="src/leaflet-src.js"></script>
+    <script src="src/jquery-3.6.0.min.js"></script>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container-fluid,
+        .row {
+            height: 100%;
+        }
+
+        #mapdiv {
+            height: 100vh;
+            width: 100%;
+        }
+
+        #side-bar {
+            height: 100vh;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row g-0">
+            <div class="col-md-9">
+                <div id="mapdiv"></div>
+            </div>
+
+            <div id="side-bar" class="col-md-3">
+                <h2>My Map</h2>
+                <p>Leaflet map with OpenStreetMap tiles.</p>
+                <p><strong>Note:</strong> Run this page through a local server, not as a file:// page.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var mymap;
+        var lyrOSM;
+
+        $(document).ready(function () {
+            mymap = L.map('mapdiv', {
+                center: [60.48033997086826, 15.421617081949014],
+                zoom: 13
+            });
+
+            lyrOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            lyrOSM.addTo(mymap);
+        });
+    </script>
+</body>
+</html>
