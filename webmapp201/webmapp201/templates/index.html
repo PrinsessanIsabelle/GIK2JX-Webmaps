@@ -153,7 +153,9 @@
                 var samplegeo = turf.buffer(s2, 0.5,{units: 'kilometers' });
 
                 var samplegeol = L.geoJSON(samplegeo, {style:{color:'yellow', dashArray:'5,5', fillOpacity:0.1}}).addTo(mymap);
-    */               
+    */             
+
+               /* Task 1 */  
                 var pointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px'>")
                    
                 var polylineCoords = 
@@ -198,7 +200,18 @@
             var polygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>Secret island</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px'>");
 
             // zoom the map to the polygon
-            mymap.fitBounds(polygon.getBounds());
+            mymap.fitBounds(polygonFeature.getBounds());
+
+            /* Task 2 */
+            var pointFeature = L.marker([59.85891534611104, 17.633938627896278], {icon:blackIcon}).addTo(mymap);
+
+            pointFeature.on("click", function () {
+                document.getElementById("sidebar").innerHTML =
+                    "<h1>Uppsala domkyrka</h1>" +
+                    "<p>Domkyrkan är en av Nordens mest kända katedraler och ligger i centrala Uppsala.</p>" +
+                    "<img src='{{ url_for('static', filename='img/UppsalaDomkyrka.jpg') }}' width='150px'>";
+                sidebar.show();
+            });
 });
             
        </script>
