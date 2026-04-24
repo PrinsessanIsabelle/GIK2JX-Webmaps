@@ -275,7 +275,90 @@
 
             /* Task 3 */
             
-            
+
+var supermarketLayer;
+var supermarketBufferLayer;
+var isolatedSupermarketLayer;
+
+
+$.getJSON("{{ url_for('static', filename='data/supermarket.geoJSON') }}", function (supermarkets) {
+    // 1) Building 1 km buffers for each supermarket point
+    var buffers = supermarkets.features.map(function (feature, idx) {
+        var b = turf.buffer(feature, 1, { units: "kilometers" });
+        b.properties = b.properties || {};
+        b.properties._idx = idx;
+        b.properties.name = (feature.properties && feature.properties.name) ? feature.properties.name : "Unnamed";
+        return b;
+    });
+
+    // 2) Finding supermarkets with NO buffer overlap
+    var isolatedIdx = new Set();
+
+    for (var i = 0; i < buffers.length; i++) {
+        var overlaps = false;
+        for (var j = 0; j < buffers.length; j++) {
+            if (i === j) continue;
+            if (turf.booleanIntersects(buffers[i], buffers[j])) {
+                overlaps = true;
+                break;
+            }
+        }
+        if (!overlaps) isolatedIdx.add(i);
+    }
+
+    // 3) Adding supermarkets with popup names
+    supermarketLayer = L.geoJSON(supermarkets, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+                radius: 6,
+                color: "#1f78b4",
+                weight: 2,
+                fillColor: "#1f78b4",
+                fillOpacity: 0.8
+            });
+        },
+        onEachFeature: function (feature, layer) {
+            var name = (feature.properties && feature.properties.name) ? feature.properties.name : "Unnamed";
+            layer.bindPopup("<b>" + name + "</b>");
+        }
+    }).addTo(mymap);
+
+    // 4) Adding all 1 km buffers
+    supermarketBufferLayer = L.geoJSON(
+        { type: "FeatureCollection", features: buffers },
+        {
+            style: {
+                color: "#ff9800",
+                weight: 2,
+                fillColor: "#ff9800",
+                fillOpacity: 0.12
+            }
+        }
+    ).addTo(mymap);
+
+    // 5) Highlighting isolated supermarkets
+    isolatedSupermarketLayer = L.geoJSON(supermarkets, {
+        filter: function (feature, layer) {
+            var idx = supermarkets.features.indexOf(feature);
+            return isolatedIdx.has(idx);
+        },
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+                radius: 9,
+                color: "#00c853",
+                weight: 3,
+                fillColor: "#00e676",
+                fillOpacity: 0.9
+            });
+        },
+        onEachFeature: function (feature, layer) {
+            var name = (feature.properties && feature.properties.name) ? feature.properties.name : "Unnamed";
+            layer.bindPopup("<b>" + name + "</b><br>Not overlapping (1 km buffer)");
+        }
+    }).addTo(mymap);
+});
+
+
             
 
 
