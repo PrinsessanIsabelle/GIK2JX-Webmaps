@@ -246,7 +246,33 @@
 
             });
 
-            
+
+            var pointFeature = L.marker([59.857015811615284, 17.632788414888203], {icon:blackIcon}).addTo(mymap);
+
+            pointFeature.on("click", function () {
+                document.getElementById("sidebar").innerHTML =
+                    "<h1>Helga Trefaldighets Kyrka</h1>" +
+                    "<img src='{{ url_for('static', filename='img/UppsalaHelga.jpg') }}' width='350px'>" + 
+                    "<p>Helga Trefaldighets kyrka (ofta kallad Bondkyrkan) är en medeltida kyrka i Uppsala, belägen precis söder om Uppsala domkyrka i området Odinslund. Den är känd för sin intima atmosfär och sina välbevarade valv med kalkmålningar av Albertus Pictor.</p>" 
+
+                    
+                sidebar.show();
+
+            });
+
+                        var pointFeature = L.marker([59.876111304391785, 17.68605804604782], {icon:blackIcon}).addTo(mymap);
+
+            pointFeature.on("click", function () {
+                document.getElementById("sidebar").innerHTML =
+                    "<h1>Vaksala Kyrka</h1>" +
+                    "<img src='{{ url_for('static', filename='img/UppsalaVaksala.jpg') }}' width='350px'>" + 
+                    "<p>Vaksala kyrka i Uppsala är en av regionens mest framträdande medeltida kyrkor, känd för sitt 76 meter höga torn som syns på långt håll..</p>" 
+
+                    
+                sidebar.show();
+
+            });
+
 });
             
        </script>
