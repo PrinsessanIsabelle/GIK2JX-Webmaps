@@ -217,13 +217,29 @@
                 sidebar.show();
 
             });
-                        var pointFeature = L.marker([59.89963329775873, 17.63183228425853], {icon:blackIcon}).addTo(mymap);
+
+            /* Gamla Uppsala kyrka */
+            var pointFeature = L.marker([59.89963329775873, 17.63183228425853], {icon:blackIcon}).addTo(mymap);
 
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
-                    "<h1>Uppsala domkyrka</h1>" +
+                    "<h1>Gamla Uppsala kyrka</h1>" +
                     "<img src='{{ url_for('static', filename='img/UppsalaGamla.jpg') }}' width='350px'>" + 
                     "<p>Gamla Uppsala kyrka är en av Sveriges mest historiskt betydelsefulla kyrkor, belägen i det forntida hjärtat av Sveariket. Den nuvarande stenkyrkan uppfördes troligen under mitten av 1100-talet och fungerade mellan 1164 och ca 1273 som Sveriges första ärkebiskopssäte.</p>" 
+
+                    
+                sidebar.show();
+
+            });
+            
+            /* Danmark kyrka */
+            var pointFeature = L.marker([59.8331258871162, 17.745021770642804], {icon:blackIcon}).addTo(mymap);
+
+            pointFeature.on("click", function () {
+                document.getElementById("sidebar").innerHTML =
+                    "<h1>Danmark kyrka</h1>" +
+                    "<img src='{{ url_for('static', filename='img/UppsalaDanmark.jpg') }}' width='350px'>" + 
+                    "<p>Danmarks kyrka ligger cirka 8 km söder om Uppsala. Det är en medeltida salkyrka som är särskilt känd för sin höga spira och sina välbevarade takmålningar. Kyrkan tillhör Danmark-Funbo församling och syns på långt håll över Uppsalaslätten.</p>" 
 
                     
                 sidebar.show();
