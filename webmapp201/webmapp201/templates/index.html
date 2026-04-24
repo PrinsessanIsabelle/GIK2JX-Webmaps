@@ -195,7 +195,7 @@
               15.651735831536143
             ]];
 
-            var polygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>Stugan</h3><img src='{{ url_for('static', filename='img/stugan.png') }}' width='150px'>");
+            var polygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>Secret island</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px'>");
 
             // zoom the map to the polygon
             mymap.fitBounds(polygon.getBounds());
