@@ -200,17 +200,34 @@
             var polygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>Secret island</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px'>");
 
             // zoom the map to the polygon
-            mymap.fitBounds(polygonFeature.getBounds());
+          
 
             /* Task 2 */
+
+            /* Uppsala domkyrka */
             var pointFeature = L.marker([59.85891534611104, 17.633938627896278], {icon:blackIcon}).addTo(mymap);
 
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
                     "<h1>Uppsala domkyrka</h1>" +
-                    "<p>Domkyrkan är en av Nordens mest kända katedraler och ligger i centrala Uppsala.</p>" +
-                    "<img src='{{ url_for('static', filename='img/UppsalaDomkyrka.jpg') }}' width='150px'>";
+                    "<img src='{{ url_for('static', filename='img/UppsalaDomkyrka.jpg') }}' width='350px'>" + 
+                    "<p>Domkyrkan är en av Nordens mest kända katedraler och ligger i centrala Uppsala.</p>" 
+
+                    
                 sidebar.show();
+
+            });
+                        var pointFeature = L.marker([59.89963329775873, 17.63183228425853], {icon:blackIcon}).addTo(mymap);
+
+            pointFeature.on("click", function () {
+                document.getElementById("sidebar").innerHTML =
+                    "<h1>Uppsala domkyrka</h1>" +
+                    "<img src='{{ url_for('static', filename='img/UppsalaGamla.jpg') }}' width='350px'>" + 
+                    "<p>Domkyrkan är en av Nordens mest kända katedraler och ligger i centrala Uppsala.</p>" 
+
+                    
+                sidebar.show();
+
             });
 });
             
