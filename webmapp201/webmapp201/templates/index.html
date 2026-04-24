@@ -200,7 +200,7 @@
             var polygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>Secret island</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px'>");
 
             // zoom the map to the polygon
-            mymap.fitBounds(polygon.getBounds());
+            mymap.fitBounds(polygonFeature.getBounds());
 
             /* Task 2 */
             var pointFeature = L.marker([59.85891534611104, 17.633938627896278], {icon:blackIcon}).addTo(mymap);
