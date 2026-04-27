@@ -407,7 +407,7 @@ $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", functi
 /* ----------------------------TASK 4----------------------------- */
 
 var task4Bounds = [[61.134, 15.685], [61.140, 15.703]];
-task4Overlay = L.imageOverlay("{{ url_for('static', filename='img/HawaiiBadplats.jpg') }}", task4Bounds, { opacity: 0.75, interactive: true });
+task4Overlay = L.imageOverlay("{{ url_for('static', filename='img/HawaiiBadplats.jpg') }}", task4Bounds, { opacity: 0.75});
 
 var btnTask4 = document.getElementById("btnTask4");
 if (btnTask4) {
@@ -420,6 +420,10 @@ if (btnTask4) {
         }
     });
 }
+
+/* ----------------------------TASK 5----------------------------- */
+
+
 
             
 
