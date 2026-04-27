@@ -155,7 +155,7 @@
                 var samplegeol = L.geoJSON(samplegeo, {style:{color:'yellow', dashArray:'5,5', fillOpacity:0.1}}).addTo(mymap);
     */             
 
-               /* Task 1 */  
+               /* ----------------------------TASK 1----------------------------- */
                 var pointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px'>")
                    
                 var polylineCoords = 
@@ -202,7 +202,7 @@
             // zoom the map to the polygon
           
 
-            /* Task 2 */
+            /* ----------------------------TASK 2----------------------------- */
 
             /* Uppsala domkyrka */
             var pointFeature = L.marker([59.85891534611104, 17.633938627896278], {icon:blackIcon}).addTo(mymap);
@@ -273,8 +273,8 @@
 
             });
 
-            /* Task 3 */
-            
+            /* ----------------------------TASK 3----------------------------- */
+
 
 var supermarketLayer;
 var supermarketBufferLayer;
@@ -282,7 +282,7 @@ var isolatedSupermarketLayer;
 
 
 $.getJSON("{{ url_for('static', filename='data/supermarket.geoJSON') }}", function (supermarkets) {
-    // 1) Building 1 km buffers for each supermarket point
+    // 1) Skapar 1 km buffers för varje mataffär-point
     var buffers = supermarkets.features.map(function (feature, idx) {
         var b = turf.buffer(feature, 1, { units: "kilometers" });
         b.properties = b.properties || {};
@@ -291,7 +291,7 @@ $.getJSON("{{ url_for('static', filename='data/supermarket.geoJSON') }}", functi
         return b;
     });
 
-    // 2) Finding supermarkets with NO buffer overlap
+    // 2) Söker/hittar mataffärer UTAN buffer overlap
     var isolatedIdx = new Set();
 
     for (var i = 0; i < buffers.length; i++) {
@@ -306,7 +306,7 @@ $.getJSON("{{ url_for('static', filename='data/supermarket.geoJSON') }}", functi
         if (!overlaps) isolatedIdx.add(i);
     }
 
-    // 3) Adding supermarkets with popup names
+    // 3) Lägger till mataffärer med popup-namn
     supermarketLayer = L.geoJSON(supermarkets, {
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, {
@@ -323,7 +323,7 @@ $.getJSON("{{ url_for('static', filename='data/supermarket.geoJSON') }}", functi
         }
     }).addTo(mymap);
 
-    // 4) Adding all 1 km buffers
+    // 4) Lägger till alla 1 km buffers
     supermarketBufferLayer = L.geoJSON(
         { type: "FeatureCollection", features: buffers },
         {
@@ -336,7 +336,7 @@ $.getJSON("{{ url_for('static', filename='data/supermarket.geoJSON') }}", functi
         }
     ).addTo(mymap);
 
-    // 5) Highlighting isolated supermarkets
+    // 5) Highlightar "isolerade" mataffärer
     isolatedSupermarketLayer = L.geoJSON(supermarkets, {
         filter: function (feature, layer) {
             var idx = supermarkets.features.indexOf(feature);
