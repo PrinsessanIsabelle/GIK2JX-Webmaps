@@ -90,7 +90,7 @@
                
                                
                                       
-                var blackIcon = L.icon({
+                var redMarkerIcon = L.icon({
                     iconUrl: "{{ url_for('static', filename='img/red_map-marker.svg') }}",
                     iconSize:     [32, 37], // size of the icon
                     iconAnchor:   [32, 37], // point of the icon which will correspond to marker's location
@@ -98,9 +98,9 @@
                 });
                 
                 // Popup and marker
-                popb = L.marker([60.48868922712431, 15.431371459960938],{icon: blackIcon}).addTo(mymap).bindPopup('Intro to Leaflet');
+                popb = L.marker([60.48868922712431, 15.431371459960938],{icon: redMarkerIcon}).addTo(mymap).bindPopup('Intro to Leaflet');
                 
-                popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src='{{ url_for('static', filename='img/museum.jpg') }}' width='150px'>")
+                popf= L.marker([60.605898734439805,15.628023594617845], {icon:redMarkerIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src='{{ url_for('static', filename='img/museum.jpg') }}' width='150px'>")
                 
                                 
                 document.getElementById("l1").addEventListener("click", sweden);
@@ -156,7 +156,7 @@
     */             
 
                /* ----------------------------TASK 1----------------------------- */
-                var pointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px'>")
+                var pointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:redMarkerIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px'>")
                    
                 var polylineCoords = 
                 [
@@ -205,7 +205,7 @@
             /* ----------------------------TASK 2----------------------------- */
 
             /* Uppsala domkyrka */
-            var pointFeature = L.marker([59.85891534611104, 17.633938627896278], {icon:blackIcon}).addTo(mymap);
+            var pointFeature = L.marker([59.85891534611104, 17.633938627896278], {icon:redMarkerIcon}).addTo(mymap);
 
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
@@ -219,7 +219,7 @@
             });
 
             /* Gamla Uppsala kyrka */
-            var pointFeature = L.marker([59.89963329775873, 17.63183228425853], {icon:blackIcon}).addTo(mymap);
+            var pointFeature = L.marker([59.89963329775873, 17.63183228425853], {icon:redMarkerIcon}).addTo(mymap);
 
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
@@ -233,7 +233,7 @@
             });
             
             /* Danmark kyrka */
-            var pointFeature = L.marker([59.8331258871162, 17.745021770642804], {icon:blackIcon}).addTo(mymap);
+            var pointFeature = L.marker([59.8331258871162, 17.745021770642804], {icon:redMarkerIcon}).addTo(mymap);
 
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
@@ -247,7 +247,7 @@
             });
 
 
-            var pointFeature = L.marker([59.857015811615284, 17.632788414888203], {icon:blackIcon}).addTo(mymap);
+            var pointFeature = L.marker([59.857015811615284, 17.632788414888203], {icon:redMarkerIcon}).addTo(mymap);
 
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
@@ -260,7 +260,7 @@
 
             });
 
-            var pointFeature = L.marker([59.876111304391785, 17.68605804604782], {icon:blackIcon}).addTo(mymap);
+            var pointFeature = L.marker([59.876111304391785, 17.68605804604782], {icon:redMarkerIcon}).addTo(mymap);
 
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
