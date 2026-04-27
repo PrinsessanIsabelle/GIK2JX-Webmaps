@@ -99,8 +99,6 @@
                 // Popup and marker
                 popb = L.marker([60.48868922712431, 15.431371459960938],{icon: redMarkerIcon}).addTo(mymap).bindPopup('Intro to Leaflet');
                 
-                popf= L.marker([60.605898734439805,15.628023594617845], {icon:redMarkerIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src='{{ url_for('static', filename='img/museum.jpg') }}' width='150px' alt='Falun Museum'>")
-                
                                 
                 var l1 = document.getElementById("l1");
                 if (l1) {
@@ -217,7 +215,7 @@
                 });
             }
 
-            // zoom the map to the polygon
+            
           
 
 /* ----------------------------TASK 2----------------------------- */
@@ -327,21 +325,6 @@ if (btnTask3) {
     });
 }
 
-var task4Bounds = [[60.6112, 15.6490], [60.6168, 15.6582]];
-task4Overlay = L.imageOverlay("{{ url_for('static', filename='img/campusfalun.jpg') }}", task4Bounds, { opacity: 0.75 });
-
-var btnTask4 = document.getElementById("btnTask4");
-if (btnTask4) {
-    btnTask4.addEventListener("click", function () {
-        if (mymap.hasLayer(task4Overlay)) {
-            mymap.removeLayer(task4Overlay);
-        } else {
-            task4Overlay.addTo(mymap);
-            mymap.fitBounds(task4Bounds, { padding: [20, 20] });
-        }
-    });
-}
-
 
 $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", function (supermarkets) {
     // 1) Skapar 1 km buffers för varje mataffär-point
@@ -420,6 +403,22 @@ $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", functi
     }).addTo(mymap);
 });
 
+/* ----------------------------TASK 4----------------------------- */
+
+var task4Bounds = [[61.134, 15.685], [61.140, 15.703]];
+task4Overlay = L.imageOverlay("{{ url_for('static', filename='img/HawaiiBadplats.jpg') }}", task4Bounds, { opacity: 0.75, interactive: true });
+
+var btnTask4 = document.getElementById("btnTask4");
+if (btnTask4) {
+    btnTask4.addEventListener("click", function () {
+        if (mymap.hasLayer(task4Overlay)) {
+            mymap.removeLayer(task4Overlay);
+        } else {
+            task4Overlay.addTo(mymap);
+            mymap.fitBounds(task4Bounds, { padding: [20, 20] });
+        }
+    });
+}
 
             
 
