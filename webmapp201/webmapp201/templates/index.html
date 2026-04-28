@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="{{ url_for('dist_files', filename='MarkerCluster.Default.css') }}">
         
         
+        
         <script src="{{ url_for('src_files', filename='leaflet-src.js') }}"></script>
         <script src="{{ url_for('src_files', filename='jquery-3.6.0.min.js') }}"></script>
         <script src="{{ url_for('src_files', filename='turf.min.js') }}" charset="utf-8"></script>
@@ -18,7 +19,8 @@
         <script src="{{ url_for('src_files', filename='plugins/L.Control.Sidebar.js') }}"></script>
         <script src="{{ url_for('static', filename='js/swedish_counties.js') }}"></script>
         <script src="{{ url_for('static', filename='js/countries.js') }}"></script>
-
+        <script src="{{ url_for('dist_files', filename='leaflet.markercluster.js') }}"></script>
+        <script src="{{ url_for('dist_files', filename='Leaflet.DonutCluster.js') }}"></script>
         
         
         
@@ -52,7 +54,8 @@
     <button id="btnTask2" class="btn btn-secondary btn-block">Task 2: Uppsala and 5 locations of churches</button>
     <button id="btnTask3" class="btn btn-success btn-block">Task 3: Supermarket Analysis</button>
     <button id="btnTask4" class="btn btn-warning btn-block">Task 4: Image Overlay</button>
-    <button id="btnTask5" class="btn btn-primary btn-block">Task 5: Fuel Stations</button>
+    <button id="btnTask5" class="btn btn-primary btn-block">Task 5: Fuel Stations MarkerCluster</button>
+    <button id="btnTask51" class="btn btn-primary btn-block">Task 5.1: Fuel Stations DonutCluster</button>
 </div>
        
        <div id="sidebar"><h1>leaflet-sidebar</h1>
@@ -164,11 +167,11 @@
 
 /* ----------------------------TASK 1----------------------------- */
 
-                var task1PointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:redMarkerIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px' alt='Campus Falun'>")
+            var task1PointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:redMarkerIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px' alt='Campus Falun'>")
                    
-                var polylineCoords = 
-                [
-				[60.621367454927025, 15.622346847045435],
+            var polylineCoords = 
+            [
+			    [60.621367454927025, 15.622346847045435],
                 [60.621697274780814, 15.62213328942957],
                 [60.62160414951677, 15.621152506306174 ],
                 [60.62262032701253, 15.620378236581274],
@@ -179,9 +182,9 @@
                 [60.623016095059484, 15.61817147455406],
                 [60.622969534364955, 15.618052831433744],
                 [60.622969534364955, 15.617491254000441]
-                ];
+            ];
 
-                var task1LineFeature = L.polyline(polylineCoords, {color: 'yellow'}).addTo(mymap).bindPopup("<h3>Vägen till Gula Måsen</h3><img src='{{ url_for('static', filename='img/BabeZiggy.png') }}' width='150px' alt='Gula Måsen'>");
+            var task1LineFeature = L.polyline(polylineCoords, {color: 'yellow'}).addTo(mymap).bindPopup("<h3>Vägen till Gula Måsen</h3><img src='{{ url_for('static', filename='img/BabeZiggy.png') }}' width='150px' alt='Gula Måsen'>");
             
             var polygonCoords = 
             [[
@@ -422,11 +425,90 @@ if (btnTask4) {
 }
 
 /* ----------------------------TASK 5----------------------------- */
+var fuelBounds; //hämtas senare via getBounds() på markerclusterlagret
 
+var task5FuelMarkers = L.markerClusterGroup();
 
+var task5DonutMarkers = L.DonutCluster({}, 
+{
+    key: 'brand', 
+    arcColorDict: 
+    {   
+        Shell: 'yellow',
+        CircleK: 'red',
+        OKQ8: 'blue',
+        Preem: 'green',
+        St1: 'orange',
+        unknown: 'gray'
+    }
+}
+);
 
-            
+$.getJSON("{{ url_for('static', filename='Data/fuel.geojson') }}", function(data) 
+{
+    var markerClusterFuelLayer = L.geoJSON(data, {
+        onEachFeature: function (feature, layer) {
+            layer.bindPopup(feature.properties.name);
+        }
+    });
 
+    fuelBounds = markerClusterFuelLayer.getBounds();
+
+    var donutClusterFuelLayer = L.geoJSON(data, {
+        pointToLayer: function(feature, latlng) {
+            return L.marker(latlng, {
+                brand: feature.properties.brand || 'unknown'
+            });
+        },
+        onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.name);
+        }
+    });
+
+    task5FuelMarkers.addLayer(markerClusterFuelLayer);
+    task5DonutMarkers.addLayer(donutClusterFuelLayer);
+
+});
+
+function showFuelMarkerCluster() 
+{
+    if (mymap.hasLayer(task5DonutMarkers)) {
+        mymap.removeLayer(task5DonutMarkers);
+    }
+    if (!mymap.hasLayer(task5FuelMarkers)) {
+        mymap.addLayer(task5FuelMarkers);
+    }
+    if (fuelBounds) {
+        mymap.fitBounds(fuelBounds, {padding: [100, 100]});
+    }
+}
+
+function showFuelDonutCluster() 
+{
+    if (mymap.hasLayer(task5FuelMarkers)) {
+        mymap.removeLayer(task5FuelMarkers);
+    }
+    if (!mymap.hasLayer(task5DonutMarkers)) {
+        mymap.addLayer(task5DonutMarkers);
+    }
+    if (fuelBounds) {
+        mymap.fitBounds(fuelBounds, {padding: [100, 100]});
+    }
+}
+
+var btnTask5 = document.getElementById("btnTask5");
+if (btnTask5) {
+    btnTask5.addEventListener("click", function () {
+        showFuelMarkerCluster();
+    });
+}
+
+var btnTask51 = document.getElementById("btnTask51");
+if (btnTask51) {
+    btnTask51.addEventListener("click", function () {
+        showFuelDonutCluster();
+    });
+}
 
 });
             
