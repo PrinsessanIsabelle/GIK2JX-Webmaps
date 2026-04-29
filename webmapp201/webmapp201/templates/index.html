@@ -398,8 +398,11 @@ $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", functi
 
 /* ----------------------------TASK 4----------------------------- */
 
-var task4Bounds = [[61.134, 15.685], [61.140, 15.703]];
-task4Overlay = L.imageOverlay("{{ url_for('static', filename='img/HawaiiBadplats.jpg') }}", task4Bounds, { opacity: 0.75});
+var task4Bounds = [[61.13830880954627, 15.691546716243213], [61.1390229910075, 15.695426107028766], [61.133544283369744, 15.689345387518388], [61.13553902622228, 15.70020768171793]];
+var task4Overlay = L.imageOverlay("{{ url_for('static', filename='img/HawaiiKarta.png') }}", task4Bounds, { interactive: true }).bindPopup(
+    "<img src='{{ url_for('static', filename='img/HawaiiBadplats.jpg') }}' width='300px' alt='Hawaii Badplats'>"
+);
+
 
 var btnTask4 = document.getElementById("btnTask4");
 if (btnTask4) {
