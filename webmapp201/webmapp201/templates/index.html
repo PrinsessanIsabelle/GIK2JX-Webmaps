@@ -446,8 +446,8 @@ $.getJSON("{{ url_for('static', filename='Data/fuel.geojson') }}", function(data
     var donutClusterFuelLayer = L.geoJSON(data, {
         pointToLayer: function(feature, latlng) {
             return L.marker(latlng, {
-                brand: feature.properties.brand || 'unknown'
-            });
+                brand: feature.properties.brand || 'unknown' // Här används Leaflets standard-marker (blå nål) 
+            }); // eftersom inget icon-objekt har definierats i L.marker() (från vår img-mapp).
         },
         onEachFeature: function(feature, layer) {
             layer.bindPopup(feature.properties.name);
