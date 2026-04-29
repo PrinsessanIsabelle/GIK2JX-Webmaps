@@ -48,14 +48,19 @@
     <body>
        <div id="mapdiv" class="col-md-9"></div>
        
-      <div id="side-bar" class="col-md-3">
+<div id="side-bar" class="col-md-3"> 
+    
     <h2>GIS Assignment 1</h2>
-    <button id="btnTask1" class="btn btn-info btn-block">Task 1: Point, line and polygon features</button>
-    <button id="btnTask2" class="btn btn-secondary btn-block">Task 2: Uppsala and 5 locations of churches</button>
-    <button id="btnTask3" class="btn btn-success btn-block">Task 3: Supermarket Analysis</button>
-    <button id="btnTask4" class="btn btn-warning btn-block">Task 4: Image Overlay</button>
-    <button id="btnTask5" class="btn btn-primary btn-block">Task 5: Fuel Stations MarkerCluster</button>
-    <button id="btnTask51" class="btn btn-primary btn-block">Task 5.1: Fuel Stations DonutCluster</button>
+    
+    <div class="d-grid gap-2">
+        <button id="btnTask1" class="btn btn-info">Task 1: Point, line and polygon features</button>
+        <button id="btnTask2" class="btn btn-secondary">Task 2: Uppsala and 5 locations of churches</button>
+        <button id="btnTask3" class="btn btn-success">Task 3: Supermarket Analysis</button>
+        <button id="btnTask4" class="btn btn-warning">Task 4: Image Overlay</button>
+        <button id="btnTask5" class="btn btn-danger">Task 5: Fuel Stations MarkerCluster</button>
+        <button id="btnTask51" class="btn btn-primary">Task 5.1: Fuel Stations DonutCluster</button>
+    </div>
+
 </div>
        
        <div id="sidebar"><h1>leaflet-sidebar</h1>
@@ -82,13 +87,7 @@
                 var sidebar = L.control.sidebar('sidebar', {position: 'left'});
                 mymap.addControl(sidebar);
                 
-                var latlngs = [
-					[60.482370725338484, 15.434717248972277],
-					[60.484316080102275, 15.441777259162706],
-					[60.486972387134756, 15.438435413671698]
-				];
-
-				var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+          
 
                
                                
@@ -100,8 +99,6 @@
                     popupAnchor:  [0, -30] // point from which the popup should open relative to the iconAnchor
                 });
                 
-                // Popup and marker
-                popb = L.marker([60.48868922712431, 15.431371459960938],{icon: redMarkerIcon}).addTo(mymap).bindPopup('Intro to Leaflet');
                 
                                 
                 var l1 = document.getElementById("l1");
@@ -155,15 +152,7 @@
                 
                 
                 
-                // Buffer
-                            
-  /*              sample1.addTo(mymap);
-                var s2 = sample1.toGeoJSON();
-                
-                var samplegeo = turf.buffer(s2, 0.5,{units: 'kilometers' });
 
-                var samplegeol = L.geoJSON(samplegeo, {style:{color:'yellow', dashArray:'5,5', fillOpacity:0.1}}).addTo(mymap);
-    */             
 
 /* ----------------------------TASK 1----------------------------- */
 
@@ -208,7 +197,7 @@
               15.651735831536143
             ]];
 
-            var task1PolygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>Secret island</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px' alt='Secret island cottage'>");
+            var task1PolygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>'secret cottage island'</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px' alt='Secret island cottage'>");
 
             var btnTask1 = document.getElementById("btnTask1");
             if (btnTask1) {
@@ -233,7 +222,7 @@
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
                     "<h1>Uppsala domkyrka</h1>" +
-                    "<img src='{{ url_for('static', filename='img/UppsalaDomkyrka.jpg') }}' width='350px' alt='Uppsala domkyrka'>" + 
+                    "<img src='{{ url_for('static', filename='img/UppsalaDomkyrka.jpg') }}' width='350px' alt='Uppsala Domkyrka'>" + 
                     "<p>Domkyrkan är en av Nordens mest kända katedraler och ligger i centrala Uppsala.</p>" 
 
                     
@@ -248,8 +237,8 @@
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
                     "<h1>Gamla Uppsala kyrka</h1>" +
-                    "<img src='{{ url_for('static', filename='img/UppsalaGamla.jpg') }}' width='350px' alt='Gamla Uppsala kyrka'>" + 
-                    "<p>Gamla Uppsala kyrka är en av Sveriges mest historiskt betydelsefulla kyrkor, belägen i det forntida hjärtat av Sveariket. Den nuvarande stenkyrkan uppfördes troligen under mitten av 1100-talet och fungerade mellan 1164 och ca 1273 som Sveriges första ärkebiskopssäte.</p>" 
+                    "<img src='{{ url_for('static', filename='img/UppsalaGamla.jpg') }}' width='350px' alt='Gamla Uppsala Kyrka'>" + 
+                    "<p>Gamla Uppsala Kyrka är en av Sveriges mest historiskt betydelsefulla kyrkor, belägen i det forntida hjärtat av Sveariket. Den nuvarande stenkyrkan uppfördes troligen under mitten av 1100-talet och fungerade mellan 1164 och ca 1273 som Sveriges första ärkebiskopssäte.</p>" 
 
                     
                 sidebar.show();
@@ -262,7 +251,7 @@
 
             pointFeature.on("click", function () {
                 document.getElementById("sidebar").innerHTML =
-                    "<h1>Danmark kyrka</h1>" +
+                    "<h1>Danmark Kyrka</h1>" +
                     "<img src='{{ url_for('static', filename='img/UppsalaDanmark.jpg') }}' width='350px' alt='Danmark kyrka'>" + 
                     "<p>Danmarks kyrka ligger cirka 8 km söder om Uppsala. Det är en medeltida salkyrka som är särskilt känd för sin höga spira och sina välbevarade takmålningar. Kyrkan tillhör Danmark-Funbo församling och syns på långt håll över Uppsalaslätten.</p>" 
 
@@ -331,7 +320,7 @@ if (btnTask3) {
 
 
 $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", function (supermarkets) {
-    // 1) Skapar 1 km buffers för varje mataffär-point
+    // Skapar 1 km buffers för varje mataffär-point
     var buffers = supermarkets.features.map(function (feature, idx) {
         var b = turf.buffer(feature, 1, { units: "kilometers" });
         b.properties = b.properties || {};
@@ -340,7 +329,7 @@ $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", functi
         return b;
     });
 
-    // 2) Söker/hittar mataffärer UTAN buffer overlap
+    // Söker/hittar mataffärer UTAN buffer overlap
     var isolatedIdx = new Set();
 
     for (var i = 0; i < buffers.length; i++) {
@@ -355,7 +344,7 @@ $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", functi
         if (!overlaps) isolatedIdx.add(i);
     }
 
-    // 3) Lägger till mataffärer med popup-namn
+    // Lägger till mataffärer med popup-namn
     supermarketLayer = L.geoJSON(supermarkets, {
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, {
@@ -372,7 +361,7 @@ $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", functi
         }
     }).addTo(mymap);
 
-    // 4) Lägger till alla 1 km buffers
+    // Lägger till alla 1 km buffers
     supermarketBufferLayer = L.geoJSON(
         { type: "FeatureCollection", features: buffers },
         {
@@ -385,7 +374,7 @@ $.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", functi
         }
     ).addTo(mymap);
 
-    // 5) Highlightar "isolerade" mataffärer
+    // Highlightar "isolerade" mataffärer
     isolatedSupermarketLayer = L.geoJSON(supermarkets, {
         filter: function (feature, layer) {
             var idx = supermarkets.features.indexOf(feature);
