@@ -167,6 +167,7 @@
 
         /* ----------------------------TASK 1----------------------------- */
 
+        //Point feature for Campus Falun
         var task1PointFeature = L.marker(
           [60.614268560585714, 15.6535054486699],
           { icon: redMarkerIcon },
@@ -174,6 +175,7 @@
           "<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px' alt='Campus Falun'>",
         );
 
+        //Polyline feature for Gula Måsen
         var polylineCoords = [
           [60.621367454927025, 15.622346847045435],
           [60.621697274780814, 15.62213328942957],
@@ -188,6 +190,28 @@
           [60.622969534364955, 15.617491254000441],
         ];
 
+        var task1LineFeature = L.polyline(polylineCoords, {
+          color: "yellow",
+        }).bindPopup(
+          "<h3>Vägen till Gula Måsen</h3><img src='{{ url_for('static', filename='img/BabeZiggy.png') }}' width='150px' alt='Gula Måsen'>",
+        );
+
+        //Polygon feature for Secret Cottage island.
+        var polygonCoords = [
+          [61.147842439613754, 15.651735831536143],
+          [61.144205514498594, 15.652395398858516],
+          [61.143341571580805, 15.664735054868345],
+          [61.14806970830725, 15.65644494526444],
+          [61.147842439613754, 15.651735831536143],
+        ];
+
+        var task1PolygonFeature = L.polygon(polygonCoords, {
+          color: "red",
+        }).bindPopup(
+          "<h3>'secret cottage island'</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px' alt='Secret island cottage'>",
+        );
+
+        // Polygon feature for Falu Lasarett and the surounding area
         var polylineCoordsFalun = [
           [
             [60.609103717479314, 15.638960673671619],
@@ -207,44 +231,26 @@
           ],
         ];
 
-        var task1LineFeature = L.polyline(polylineCoords, {
-          color: "yellow",
-        }).bindPopup(
-          "<h3>Vägen till Gula Måsen</h3><img src='{{ url_for('static', filename='img/BabeZiggy.png') }}' width='150px' alt='Gula Måsen'>",
-        );
-
         var task1PolygonFeatureLasarett = L.polygon(polylineCoordsFalun, {
           color: "green",
         }).bindPopup(
           "<h3>Falu Lasarett</h3><img src='{{ url_for('static', filename='img/FaluLasarett.jpg') }}' width='150px' alt='Falu Lasarett'>",
         );
 
-        var polygonCoords = [
-          [61.147842439613754, 15.651735831536143],
-          [61.144205514498594, 15.652395398858516],
-          [61.143341571580805, 15.664735054868345],
-          [61.14806970830725, 15.65644494526444],
-          [61.147842439613754, 15.651735831536143],
-        ];
-
-        var task1PolygonFeature = L.polygon(polygonCoords, {
-          color: "red",
-        }).bindPopup(
-          "<h3>'secret cottage island'</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px' alt='Secret island cottage'>",
-        );
         var task1Visible = false;
         var btnTask1 = document.getElementById("btnTask1");
 
+        // if - else statement for showing or hiding the features. Using the task1Visiable variable.
         if (btnTask1) {
           btnTask1.addEventListener("click", function () {
             if (!task1Visible) {
-              // Visa alla features
+              // Show all features
               task1PointFeature.addTo(mymap);
               task1LineFeature.addTo(mymap);
               task1PolygonFeature.addTo(mymap);
               task1PolygonFeatureLasarett.addTo(mymap);
 
-              // Zooma in så alla syns
+              // Zoom in on the relevant features
               var task1Bounds = L.featureGroup([
                 task1PointFeature,
                 task1LineFeature,
@@ -256,7 +262,7 @@
               task1PointFeature.openPopup();
               task1Visible = true;
             } else {
-              // Dölj alla features
+              // Hide all features
               mymap.removeLayer(task1PointFeature);
               mymap.removeLayer(task1LineFeature);
               mymap.removeLayer(task1PolygonFeature);
@@ -343,6 +349,7 @@
           sidebar.show();
         });
 
+        // if - else statement for showing and hiding marker features.
         var task2Visible = false;
         var btnTask2 = document.getElementById("btnTask2");
         if (btnTask2) {
