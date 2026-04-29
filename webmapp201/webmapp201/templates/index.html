@@ -1,509 +1,601 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Grupp 1 - Web Map App</title>
-        <link rel="stylesheet" href="{{ url_for('src_files', filename='leaflet.css') }}">
-        <link rel="stylesheet" href="{{ url_for('src_files', filename='css/bootstrap.css') }}">
-        <link rel="stylesheet" href="{{ url_for('src_files', filename='plugins/L.Control.Zoomslider.css') }}">
-        <link rel="stylesheet" href="{{ url_for('src_files', filename='plugins/L.Control.Sidebar.css') }}">
-        <link rel="stylesheet" href="{{ url_for('dist_files', filename='MarkerCluster.css') }}">
-        <link rel="stylesheet" href="{{ url_for('dist_files', filename='MarkerCluster.Default.css') }}">
-        
-        
-        
-        <script src="{{ url_for('src_files', filename='leaflet-src.js') }}"></script>
-        <script src="{{ url_for('src_files', filename='jquery-3.6.0.min.js') }}"></script>
-        <script src="{{ url_for('src_files', filename='turf.min.js') }}" charset="utf-8"></script>
-        <script src="{{ url_for('src_files', filename='plugins/L.Control.Zoomslider.js') }}"></script>
-        <script src="{{ url_for('src_files', filename='plugins/L.Control.Sidebar.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/swedish_counties.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/countries.js') }}"></script>
-        <script src="{{ url_for('dist_files', filename='leaflet.markercluster.js') }}"></script>
-        <script src="{{ url_for('dist_files', filename='Leaflet.DonutCluster.js') }}"></script>
-        
-        
-        
-       
-        
-        <style>
-            #mapdiv {
-                height: 100vh;
-            }  
-            
-            #side-bar {
-			position: absolute;
-			z-index: 1000;
-			background: rgba(255,255,255,0.7);
-			padding: 10px;
-			right: 0;
-            top: 0;
-			margin: 10px;
-			border-radius: 10px;
-			min-height: 200px;
-            }
-                        
-        </style>
-    </head>
-    <body>
-       <div id="mapdiv" class="col-md-9"></div>
-       
-<div id="side-bar" class="col-md-3"> 
-    
-    <h2>GIS Assignment 1</h2>
-    
-    <div class="d-grid gap-2">
-        <button id="btnTask1" class="btn btn-info">Task 1: Point, line and polygon features</button>
-        <button id="btnTask2" class="btn btn-secondary">Task 2: Uppsala and 5 locations of churches</button>
-        <button id="btnTask3" class="btn btn-success">Task 3: Supermarket Analysis</button>
-        <button id="btnTask4" class="btn btn-warning">Task 4: Image Overlay</button>
-        <button id="btnTask5" class="btn btn-danger">Task 5: Fuel Stations MarkerCluster</button>
-        <button id="btnTask51" class="btn btn-primary">Task 5.1: Fuel Stations DonutCluster</button>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Grupp 1 - Web Map App</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('src_files', filename='leaflet.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('src_files', filename='css/bootstrap.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('src_files', filename='plugins/L.Control.Zoomslider.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('src_files', filename='plugins/L.Control.Sidebar.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('dist_files', filename='MarkerCluster.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('dist_files', filename='MarkerCluster.Default.css') }}"
+    />
+
+    <script src="{{ url_for('src_files', filename='leaflet-src.js') }}"></script>
+    <script src="{{ url_for('src_files', filename='jquery-3.6.0.min.js') }}"></script>
+    <script
+      src="{{ url_for('src_files', filename='turf.min.js') }}"
+      charset="utf-8"
+    ></script>
+    <script src="{{ url_for('src_files', filename='plugins/L.Control.Zoomslider.js') }}"></script>
+    <script src="{{ url_for('src_files', filename='plugins/L.Control.Sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/swedish_counties.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/countries.js') }}"></script>
+    <script src="{{ url_for('dist_files', filename='leaflet.markercluster.js') }}"></script>
+    <script src="{{ url_for('dist_files', filename='Leaflet.DonutCluster.js') }}"></script>
+
+    <style>
+      #mapdiv {
+        height: 100vh;
+      }
+
+      #side-bar {
+        position: absolute;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 10px;
+        right: 0;
+        top: 0;
+        margin: 10px;
+        border-radius: 10px;
+        min-height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mapdiv" class="col-md-9"></div>
+
+    <div id="side-bar" class="col-md-3">
+      <h2>GIS Assignment 1</h2>
+
+      <div class="d-grid gap-2">
+        <button id="btnTask1" class="btn btn-info">
+          Task 1: Point, line and polygon features
+        </button>
+        <button id="btnTask2" class="btn btn-secondary">
+          Task 2: Uppsala and 5 locations of churches
+        </button>
+        <button id="btnTask3" class="btn btn-success">
+          Task 3: Supermarket Analysis
+        </button>
+        <button id="btnTask4" class="btn btn-warning">
+          Task 4: Image Overlay
+        </button>
+        <button id="btnTask5" class="btn btn-danger">
+          Task 5: Fuel Stations MarkerCluster
+        </button>
+        <button id="btnTask51" class="btn btn-primary">
+          Task 5.1: Fuel Stations DonutCluster
+        </button>
+      </div>
     </div>
 
-</div>
-       
-       <div id="sidebar"><h1>leaflet-sidebar</h1>
-       </div>
-        
-       <script>
-            var mymap; 
-            var lyrOSM; 
-            var mrkCurrentLocation;
-            var ctlZoomslider;
-            var swedishlayer = L.geoJson(swedish_counties);
-            var countrieslayer
-            var ctlSlidebar;
-            
-           
-            $(document).ready(function(){
-                mymap = L.map('mapdiv', {center:[60.48868922712431, 15.421371459960938], zoom:13});
-                lyrOSM= L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-                mymap.addLayer(lyrOSM);
-                
-                
-                ctlZoomslider = L.control.zoomslider({position:'topright'}).addTo(mymap);
-                
-                var sidebar = L.control.sidebar('sidebar', {position: 'left'});
-                mymap.addControl(sidebar);
-                
-          
+    <div id="sidebar"><h1>leaflet-sidebar</h1></div>
 
-               
-                               
-                                      
-                var redMarkerIcon = L.icon({
-                    iconUrl: "{{ url_for('static', filename='img/red_map-marker.svg') }}",
-                    iconSize:     [32, 37], // size of the icon
-                    iconAnchor:   [32, 37], // point of the icon which will correspond to marker's location
-                    popupAnchor:  [0, -30] // point from which the popup should open relative to the iconAnchor
-                });
-                
-                
-                                
-                var l1 = document.getElementById("l1");
-                if (l1) {
-                    l1.addEventListener("click", sweden);
+    <script>
+      var mymap;
+      var lyrOSM;
+      var mrkCurrentLocation;
+      var ctlZoomslider;
+      var swedishlayer = L.geoJson(swedish_counties);
+      var countrieslayer;
+      var ctlSlidebar;
+
+      $(document).ready(function () {
+        mymap = L.map("mapdiv", {
+          center: [60.48868922712431, 15.421371459960938],
+          zoom: 13,
+        });
+        lyrOSM = L.tileLayer(
+          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        );
+        mymap.addLayer(lyrOSM);
+
+        ctlZoomslider = L.control
+          .zoomslider({ position: "topright" })
+          .addTo(mymap);
+
+        var sidebar = L.control.sidebar("sidebar", { position: "left" });
+        mymap.addControl(sidebar);
+
+        var redMarkerIcon = L.icon({
+          iconUrl: "{{ url_for('static', filename='img/red_map-marker.svg') }}",
+          iconSize: [32, 37], // size of the icon
+          iconAnchor: [32, 37], // point of the icon which will correspond to marker's location
+          popupAnchor: [0, -30], // point from which the popup should open relative to the iconAnchor
+        });
+
+        var l1 = document.getElementById("l1");
+        if (l1) {
+          l1.addEventListener("click", sweden);
+        }
+
+        function sweden() {
+          if (mymap.hasLayer(swedishlayer)) {
+            mymap.removeLayer(swedishlayer);
+
+            sidebar.hide();
+          } else {
+            swedishlayer.addTo(mymap);
+
+            sidebar.show();
+          }
+        }
+
+        countrieslayer = L.geoJson(countries, {
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup(feature.properties.name);
+          },
+        });
+
+        var l2 = document.getElementById("l2");
+        if (l2) {
+          l2.addEventListener("click", c_layers);
+        }
+
+        function c_layers() {
+          if (mymap.hasLayer(countrieslayer)) {
+            mymap.removeLayer(countrieslayer);
+          } else {
+            countrieslayer.addTo(mymap);
+          }
+        }
+
+        var btnFalun = document.getElementById("btnFalun");
+        if (btnFalun) {
+          btnFalun.addEventListener("click", function () {
+            mymap.setView([60.605866810126194, 15.628008842468262], 17);
+          });
+        }
+
+        /* ----------------------------TASK 1----------------------------- */
+
+        var task1PointFeature = L.marker(
+          [60.614268560585714, 15.6535054486699],
+          { icon: redMarkerIcon },
+        ).bindPopup(
+          "<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px' alt='Campus Falun'>",
+        );
+
+        var polylineCoords = [
+          [60.621367454927025, 15.622346847045435],
+          [60.621697274780814, 15.62213328942957],
+          [60.62160414951677, 15.621152506306174],
+          [60.62262032701253, 15.620378236581274],
+          [60.622934613799714, 15.61978502098242],
+          [60.62314801666287, 15.619081071805823],
+          [60.623283817749524, 15.61825056996733],
+          [60.623101456158565, 15.618195203177947],
+          [60.623016095059484, 15.61817147455406],
+          [60.622969534364955, 15.618052831433744],
+          [60.622969534364955, 15.617491254000441],
+        ];
+
+        var polylineCoordsFalun = [
+          [
+            [60.609103717479314, 15.638960673671619],
+            [60.60547397510547, 15.64331355362475],
+            [60.60520432081182, 15.64445459982619],
+            [60.605017635750556, 15.645764689908276],
+            [60.60584733886995, 15.646652170287467],
+            [60.606718504191775, 15.647962260369582],
+            [60.60700888740698, 15.648596174926496],
+            [60.60966369852562, 15.654428188843667],
+            [60.61028588829171, 15.654216883992234],
+            [60.61142653837473, 15.652568706144962],
+            [60.61194500235695, 15.652061574500436],
+            [60.61078363146805, 15.644961731470715],
+            [60.610368846021004, 15.64267963906778],
+            [60.609103717479314, 15.638960673671619],
+          ],
+        ];
+
+        var task1LineFeature = L.polyline(polylineCoords, {
+          color: "yellow",
+        }).bindPopup(
+          "<h3>Vägen till Gula Måsen</h3><img src='{{ url_for('static', filename='img/BabeZiggy.png') }}' width='150px' alt='Gula Måsen'>",
+        );
+
+        var task1PolygonFeatureLasarett = L.polygon(polylineCoordsFalun, {
+          color: "green",
+        }).bindPopup(
+          "<h3>Falu Lasarett</h3><img src='{{ url_for('static', filename='img/FaluLasarett.jpg') }}' width='150px' alt='Falu Lasarett'>",
+        );
+
+        var polygonCoords = [
+          [61.147842439613754, 15.651735831536143],
+          [61.144205514498594, 15.652395398858516],
+          [61.143341571580805, 15.664735054868345],
+          [61.14806970830725, 15.65644494526444],
+          [61.147842439613754, 15.651735831536143],
+        ];
+
+        var task1PolygonFeature = L.polygon(polygonCoords, {
+          color: "red",
+        }).bindPopup(
+          "<h3>'secret cottage island'</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px' alt='Secret island cottage'>",
+        );
+        var task1Visible = false;
+        var btnTask1 = document.getElementById("btnTask1");
+
+        if (btnTask1) {
+          btnTask1.addEventListener("click", function () {
+            if (!task1Visible) {
+              // Visa alla features
+              task1PointFeature.addTo(mymap);
+              task1LineFeature.addTo(mymap);
+              task1PolygonFeature.addTo(mymap);
+              task1PolygonFeatureLasarett.addTo(mymap);
+
+              // Zooma in så alla syns
+              var task1Bounds = L.featureGroup([
+                task1PointFeature,
+                task1LineFeature,
+                task1PolygonFeature,
+                task1PolygonFeatureLasarett,
+              ]).getBounds();
+              mymap.fitBounds(task1Bounds, { padding: [20, 20] });
+
+              task1PointFeature.openPopup();
+              task1Visible = true;
+            } else {
+              // Dölj alla features
+              mymap.removeLayer(task1PointFeature);
+              mymap.removeLayer(task1LineFeature);
+              mymap.removeLayer(task1PolygonFeature);
+              mymap.removeLayer(task1PolygonFeatureLasarett);
+
+              task1Visible = false;
+            }
+          });
+        }
+        /* ----------------------------TASK 2----------------------------- */
+
+        var task2Markers = [];
+
+        /* Uppsala domkyrka */
+        var pointFeature1 = L.marker([59.85891534611104, 17.633938627896278], {
+          icon: redMarkerIcon,
+        });
+        task2Markers.push(pointFeature1);
+
+        pointFeature1.on("click", function () {
+          document.getElementById("sidebar").innerHTML =
+            "<h1>Uppsala domkyrka</h1>" +
+            "<img src='{{ url_for('static', filename='img/UppsalaDomkyrka.jpg') }}' width='350px' alt='Uppsala Domkyrka'>" +
+            "<p>Domkyrkan är en av Nordens mest kända katedraler och ligger i centrala Uppsala.</p>";
+
+          sidebar.show();
+        });
+
+        /* Gamla Uppsala kyrka */
+        var pointFeature2 = L.marker([59.89963329775873, 17.63183228425853], {
+          icon: redMarkerIcon,
+        });
+        task2Markers.push(pointFeature2);
+
+        pointFeature2.on("click", function () {
+          document.getElementById("sidebar").innerHTML =
+            "<h1>Gamla Uppsala kyrka</h1>" +
+            "<img src='{{ url_for('static', filename='img/UppsalaGamla.jpg') }}' width='350px' alt='Gamla Uppsala Kyrka'>" +
+            "<p>Gamla Uppsala Kyrka är en av Sveriges mest historiskt betydelsefulla kyrkor, belägen i det forntida hjärtat av Sveariket. Den nuvarande stenkyrkan uppfördes troligen under mitten av 1100-talet och fungerade mellan 1164 och ca 1273 som Sveriges första ärkebiskopssäte.</p>";
+
+          sidebar.show();
+        });
+
+        /* Danmark kyrka */
+        var pointFeature3 = L.marker([59.8331258871162, 17.745021770642804], {
+          icon: redMarkerIcon,
+        });
+        task2Markers.push(pointFeature3);
+
+        pointFeature3.on("click", function () {
+          document.getElementById("sidebar").innerHTML =
+            "<h1>Danmark Kyrka</h1>" +
+            "<img src='{{ url_for('static', filename='img/UppsalaDanmark.jpg') }}' width='350px' alt='Danmark kyrka'>" +
+            "<p>Danmarks kyrka ligger cirka 8 km söder om Uppsala. Det är en medeltida salkyrka som är särskilt känd för sin höga spira och sina välbevarade takmålningar. Kyrkan tillhör Danmark-Funbo församling och syns på långt håll över Uppsalaslätten.</p>";
+
+          sidebar.show();
+        });
+
+        var pointFeature4 = L.marker([59.857015811615284, 17.632788414888203], {
+          icon: redMarkerIcon,
+        });
+        task2Markers.push(pointFeature4);
+
+        pointFeature4.on("click", function () {
+          document.getElementById("sidebar").innerHTML =
+            "<h1>Helga Trefaldighets Kyrka</h1>" +
+            "<img src='{{ url_for('static', filename='img/UppsalaHelga.jpg') }}' width='350px' alt='Helga Trefaldighets kyrka'>" +
+            "<p>Helga Trefaldighets kyrka (ofta kallad Bondkyrkan) är en medeltida kyrka i Uppsala, belägen precis söder om Uppsala domkyrka i området Odinslund. Den är känd för sin intima atmosfär och sina välbevarade valv med kalkmålningar av Albertus Pictor.</p>";
+
+          sidebar.show();
+        });
+
+        var pointFeature5 = L.marker([59.876111304391785, 17.68605804604782], {
+          icon: redMarkerIcon,
+        });
+        task2Markers.push(pointFeature5);
+
+        pointFeature5.on("click", function () {
+          document.getElementById("sidebar").innerHTML =
+            "<h1>Vaksala Kyrka</h1>" +
+            "<img src='{{ url_for('static', filename='img/UppsalaVaksala.jpg') }}' width='350px' alt='Vaksala kyrka'>" +
+            "<p>Vaksala kyrka i Uppsala är en av regionens mest framträdande medeltida kyrkor, känd för sitt 76 meter höga torn som syns på långt håll..</p>";
+
+          sidebar.show();
+        });
+
+        var task2Visible = false;
+        var btnTask2 = document.getElementById("btnTask2");
+        if (btnTask2) {
+          btnTask2.addEventListener("click", function () {
+            if (!task2Visible) {
+              task2Markers.forEach(function (m) {
+                m.addTo(mymap);
+              });
+              var bounds = L.featureGroup(task2Markers).getBounds();
+              mymap.fitBounds(bounds, { padding: [20, 20] });
+              pointFeature1.fire("click");
+              task2Visible = true;
+            } else {
+              task2Markers.forEach(function (m) {
+                mymap.removeLayer(m);
+              });
+              task2Visible = false;
+            }
+          });
+        }
+
+        /* ----------------------------TASK 3----------------------------- */
+
+        var supermarketLayer;
+        var supermarketBufferLayer;
+        var isolatedSupermarketLayer;
+        var task4Overlay;
+
+        var btnTask3 = document.getElementById("btnTask3");
+        if (btnTask3) {
+          btnTask3.addEventListener("click", function () {
+            if (
+              supermarketLayer &&
+              supermarketBufferLayer &&
+              isolatedSupermarketLayer
+            ) {
+              if (!mymap.hasLayer(supermarketLayer))
+                mymap.addLayer(supermarketLayer);
+              if (!mymap.hasLayer(supermarketBufferLayer))
+                mymap.addLayer(supermarketBufferLayer);
+              if (!mymap.hasLayer(isolatedSupermarketLayer))
+                mymap.addLayer(isolatedSupermarketLayer);
+              mymap.fitBounds(supermarketBufferLayer.getBounds(), {
+                padding: [20, 20],
+              });
+            }
+          });
+        }
+
+        $.getJSON(
+          "{{ url_for('static', filename='Data/supermarket.geojson') }}",
+          function (supermarkets) {
+            // Skapar 1 km buffers för varje mataffär-point
+            var buffers = supermarkets.features.map(function (feature, idx) {
+              var b = turf.buffer(feature, 1, { units: "kilometers" });
+              b.properties = b.properties || {};
+              b.properties._idx = idx;
+              b.properties.name =
+                feature.properties && feature.properties.name
+                  ? feature.properties.name
+                  : "Unnamed";
+              return b;
+            });
+
+            // Söker/hittar mataffärer UTAN buffer overlap
+            var isolatedIdx = new Set();
+
+            for (var i = 0; i < buffers.length; i++) {
+              var overlaps = false;
+              for (var j = 0; j < buffers.length; j++) {
+                if (i === j) continue;
+                if (turf.booleanIntersects(buffers[i], buffers[j])) {
+                  overlaps = true;
+                  break;
                 }
-
-		          function sweden(){
-                      if(mymap.hasLayer(swedishlayer)){
-                          mymap.removeLayer(swedishlayer);
-                         
-                          sidebar.hide();
-                          
-                      } else {
-                          swedishlayer.addTo(mymap);
-                          
-                          sidebar.show();
-                      }
-			
-		          };
-                
-                countrieslayer = L.geoJson(countries, {
-			    onEachFeature: function (feature, layer) {
-				layer.bindPopup(feature.properties.name);
-			     }
-		         });
-
-
-              var l2 = document.getElementById("l2");
-              if (l2) {
-                  l2.addEventListener("click", c_layers);
               }
-                
-                function c_layers(){
-                    if(mymap.hasLayer(countrieslayer)){
-                        mymap.removeLayer(countrieslayer);
-                    } 
-                    else {
-                        countrieslayer.addTo(mymap);
-                        }
-                    };
-                
-                
-                
-                var btnFalun = document.getElementById("btnFalun");
-                if (btnFalun) {
-                    btnFalun.addEventListener("click", function () {
-                        mymap.setView([60.605866810126194, 15.628008842468262], 17);
-                    });
-                }
-                
-                
-                
+              if (!overlaps) isolatedIdx.add(i);
+            }
 
-
-/* ----------------------------TASK 1----------------------------- */
-
-            var task1PointFeature = L.marker([60.614268560585714, 15.6535054486699], {icon:redMarkerIcon}).addTo(mymap).bindPopup("<h3>Campus Falun</h3><img src='{{ url_for('static', filename='img/campusfalun.jpg') }}' width='150px' alt='Campus Falun'>")
-                   
-            var polylineCoords = 
-            [
-			    [60.621367454927025, 15.622346847045435],
-                [60.621697274780814, 15.62213328942957],
-                [60.62160414951677, 15.621152506306174 ],
-                [60.62262032701253, 15.620378236581274],
-                [60.622934613799714, 15.61978502098242],
-                [60.62314801666287, 15.619081071805823],
-                [60.623283817749524, 15.61825056996733],
-                [60.623101456158565, 15.618195203177947],
-                [60.623016095059484, 15.61817147455406],
-                [60.622969534364955, 15.618052831433744],
-                [60.622969534364955, 15.617491254000441]
-            ];
-
-            var task1LineFeature = L.polyline(polylineCoords, {color: 'yellow'}).addTo(mymap).bindPopup("<h3>Vägen till Gula Måsen</h3><img src='{{ url_for('static', filename='img/BabeZiggy.png') }}' width='150px' alt='Gula Måsen'>");
-            
-            var polygonCoords = 
-            [[
-               61.147842439613754,
-               15.651735831536143
-            ],
-            [
-              61.144205514498594,
-              15.652395398858516
-            ],
-            [
-              61.143341571580805,
-              15.664735054868345
-            ],
-            [
-              61.14806970830725,
-              15.65644494526444
-            ],
-            [
-              61.147842439613754,
-              15.651735831536143
-            ]];
-
-            var task1PolygonFeature = L.polygon(polygonCoords, {color: 'red'}).addTo(mymap).bindPopup("<h3>'secret cottage island'</h3><img src='{{ url_for('static', filename='img/cottage.jpg') }}' width='150px' alt='Secret island cottage'>");
-
-            var btnTask1 = document.getElementById("btnTask1");
-            if (btnTask1) {
-                btnTask1.addEventListener("click", function () {
-                    var task1Bounds = L.featureGroup([task1PointFeature, task1LineFeature, task1PolygonFeature]).getBounds();
-                    mymap.fitBounds(task1Bounds, { padding: [20, 20] });
-                    task1PointFeature.openPopup();
+            // Lägger till mataffärer med popup-namn
+            supermarketLayer = L.geoJSON(supermarkets, {
+              pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                  radius: 6,
+                  color: "#1f78b4",
+                  weight: 2,
+                  fillColor: "#1f78b4",
+                  fillOpacity: 0.8,
                 });
-            }
+              },
+              onEachFeature: function (feature, layer) {
+                var name =
+                  feature.properties && feature.properties.name
+                    ? feature.properties.name
+                    : "Unnamed";
+                layer.bindPopup("<b>" + name + "</b>");
+              },
+            }).addTo(mymap);
 
-            
-          
+            // Lägger till alla 1 km buffers
+            supermarketBufferLayer = L.geoJSON(
+              { type: "FeatureCollection", features: buffers },
+              {
+                style: {
+                  color: "#ff9800",
+                  weight: 2,
+                  fillColor: "#ff9800",
+                  fillOpacity: 0.12,
+                },
+              },
+            ).addTo(mymap);
 
-/* ----------------------------TASK 2----------------------------- */
-
-            var task2Markers = [];
-
-            /* Uppsala domkyrka */
-            var pointFeature = L.marker([59.85891534611104, 17.633938627896278], {icon:redMarkerIcon}).addTo(mymap);
-            task2Markers.push(pointFeature);
-
-            pointFeature.on("click", function () {
-                document.getElementById("sidebar").innerHTML =
-                    "<h1>Uppsala domkyrka</h1>" +
-                    "<img src='{{ url_for('static', filename='img/UppsalaDomkyrka.jpg') }}' width='350px' alt='Uppsala Domkyrka'>" + 
-                    "<p>Domkyrkan är en av Nordens mest kända katedraler och ligger i centrala Uppsala.</p>" 
-
-                    
-                sidebar.show();
-
-            });
-
-            /* Gamla Uppsala kyrka */
-            var pointFeature = L.marker([59.89963329775873, 17.63183228425853], {icon:redMarkerIcon}).addTo(mymap);
-            task2Markers.push(pointFeature);
-
-            pointFeature.on("click", function () {
-                document.getElementById("sidebar").innerHTML =
-                    "<h1>Gamla Uppsala kyrka</h1>" +
-                    "<img src='{{ url_for('static', filename='img/UppsalaGamla.jpg') }}' width='350px' alt='Gamla Uppsala Kyrka'>" + 
-                    "<p>Gamla Uppsala Kyrka är en av Sveriges mest historiskt betydelsefulla kyrkor, belägen i det forntida hjärtat av Sveariket. Den nuvarande stenkyrkan uppfördes troligen under mitten av 1100-talet och fungerade mellan 1164 och ca 1273 som Sveriges första ärkebiskopssäte.</p>" 
-
-                    
-                sidebar.show();
-
-            });
-            
-            /* Danmark kyrka */
-            var pointFeature = L.marker([59.8331258871162, 17.745021770642804], {icon:redMarkerIcon}).addTo(mymap);
-            task2Markers.push(pointFeature);
-
-            pointFeature.on("click", function () {
-                document.getElementById("sidebar").innerHTML =
-                    "<h1>Danmark Kyrka</h1>" +
-                    "<img src='{{ url_for('static', filename='img/UppsalaDanmark.jpg') }}' width='350px' alt='Danmark kyrka'>" + 
-                    "<p>Danmarks kyrka ligger cirka 8 km söder om Uppsala. Det är en medeltida salkyrka som är särskilt känd för sin höga spira och sina välbevarade takmålningar. Kyrkan tillhör Danmark-Funbo församling och syns på långt håll över Uppsalaslätten.</p>" 
-
-                    
-                sidebar.show();
-
-            });
-
-
-            var pointFeature = L.marker([59.857015811615284, 17.632788414888203], {icon:redMarkerIcon}).addTo(mymap);
-            task2Markers.push(pointFeature);
-
-            pointFeature.on("click", function () {
-                document.getElementById("sidebar").innerHTML =
-                    "<h1>Helga Trefaldighets Kyrka</h1>" +
-                    "<img src='{{ url_for('static', filename='img/UppsalaHelga.jpg') }}' width='350px' alt='Helga Trefaldighets kyrka'>" + 
-                    "<p>Helga Trefaldighets kyrka (ofta kallad Bondkyrkan) är en medeltida kyrka i Uppsala, belägen precis söder om Uppsala domkyrka i området Odinslund. Den är känd för sin intima atmosfär och sina välbevarade valv med kalkmålningar av Albertus Pictor.</p>" 
-
-                    
-                sidebar.show();
-
-            });
-
-            var pointFeature = L.marker([59.876111304391785, 17.68605804604782], {icon:redMarkerIcon}).addTo(mymap);
-            task2Markers.push(pointFeature);
-
-            pointFeature.on("click", function () {
-                document.getElementById("sidebar").innerHTML =
-                    "<h1>Vaksala Kyrka</h1>" +
-                    "<img src='{{ url_for('static', filename='img/UppsalaVaksala.jpg') }}' width='350px' alt='Vaksala kyrka'>" + 
-                    "<p>Vaksala kyrka i Uppsala är en av regionens mest framträdande medeltida kyrkor, känd för sitt 76 meter höga torn som syns på långt håll..</p>" 
-
-                    
-                sidebar.show();
-
-            });
-
-            var btnTask2 = document.getElementById("btnTask2");
-            if (btnTask2) {
-                btnTask2.addEventListener("click", function () {
-                    var task2Bounds = L.featureGroup(task2Markers).getBounds();
-                    mymap.fitBounds(task2Bounds, { padding: [20, 20] });
-                    task2Markers[0].fire("click");
+            // Highlightar "isolerade" mataffärer
+            isolatedSupermarketLayer = L.geoJSON(supermarkets, {
+              filter: function (feature, layer) {
+                var idx = supermarkets.features.indexOf(feature);
+                return isolatedIdx.has(idx);
+              },
+              pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                  radius: 9,
+                  color: "#00c853",
+                  weight: 3,
+                  fillColor: "#00e676",
+                  fillOpacity: 0.9,
                 });
+              },
+              onEachFeature: function (feature, layer) {
+                var name =
+                  feature.properties && feature.properties.name
+                    ? feature.properties.name
+                    : "Unnamed";
+                layer.bindPopup(
+                  "<b>" + name + "</b><br>Not overlapping (1 km buffer)",
+                );
+              },
+            }).addTo(mymap);
+          },
+        );
+
+        /* ----------------------------TASK 4----------------------------- */
+
+        var task4Bounds = [
+          [61.13830880954627, 15.691546716243213],
+          [61.1390229910075, 15.695426107028766],
+          [61.133544283369744, 15.689345387518388],
+          [61.13553902622228, 15.70020768171793],
+        ];
+        var task4Overlay = L.imageOverlay(
+          "{{ url_for('static', filename='img/HawaiiKarta.png') }}",
+          task4Bounds,
+          { interactive: true },
+        ).bindPopup(
+          "<img src='{{ url_for('static', filename='img/HawaiiBadplats.jpg') }}' width='300px' alt='Hawaii Badplats'>",
+        );
+
+        var btnTask4 = document.getElementById("btnTask4");
+        if (btnTask4) {
+          btnTask4.addEventListener("click", function () {
+            if (mymap.hasLayer(task4Overlay)) {
+              mymap.removeLayer(task4Overlay);
+            } else {
+              task4Overlay.addTo(mymap);
+              mymap.fitBounds(task4Bounds, { padding: [20, 20] });
             }
-
-/* ----------------------------TASK 3----------------------------- */
-
-
-var supermarketLayer;
-var supermarketBufferLayer;
-var isolatedSupermarketLayer;
-var task4Overlay;
-
-var btnTask3 = document.getElementById("btnTask3");
-if (btnTask3) {
-    btnTask3.addEventListener("click", function () {
-        if (supermarketLayer && supermarketBufferLayer && isolatedSupermarketLayer) {
-            if (!mymap.hasLayer(supermarketLayer)) mymap.addLayer(supermarketLayer);
-            if (!mymap.hasLayer(supermarketBufferLayer)) mymap.addLayer(supermarketBufferLayer);
-            if (!mymap.hasLayer(isolatedSupermarketLayer)) mymap.addLayer(isolatedSupermarketLayer);
-            mymap.fitBounds(supermarketBufferLayer.getBounds(), { padding: [20, 20] });
+          });
         }
-    });
-}
 
+        /* ----------------------------TASK 5----------------------------- */
+        var fuelBounds; //hämtas senare via getBounds() på markerclusterlagret
 
-$.getJSON("{{ url_for('static', filename='Data/supermarket.geojson') }}", function (supermarkets) {
-    // Skapar 1 km buffers för varje mataffär-point
-    var buffers = supermarkets.features.map(function (feature, idx) {
-        var b = turf.buffer(feature, 1, { units: "kilometers" });
-        b.properties = b.properties || {};
-        b.properties._idx = idx;
-        b.properties.name = (feature.properties && feature.properties.name) ? feature.properties.name : "Unnamed";
-        return b;
-    });
+        var task5FuelMarkers = L.markerClusterGroup();
 
-    // Söker/hittar mataffärer UTAN buffer overlap
-    var isolatedIdx = new Set();
+        var task5DonutMarkers = L.DonutCluster(
+          {},
+          {
+            key: "brand",
+            arcColorDict: {
+              Shell: "yellow",
+              CircleK: "red",
+              OKQ8: "blue",
+              Preem: "green",
+              St1: "orange",
+              unknown: "gray",
+            },
+          },
+        );
 
-    for (var i = 0; i < buffers.length; i++) {
-        var overlaps = false;
-        for (var j = 0; j < buffers.length; j++) {
-            if (i === j) continue;
-            if (turf.booleanIntersects(buffers[i], buffers[j])) {
-                overlaps = true;
-                break;
-            }
-        }
-        if (!overlaps) isolatedIdx.add(i);
-    }
-
-    // Lägger till mataffärer med popup-namn
-    supermarketLayer = L.geoJSON(supermarkets, {
-        pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, {
-                radius: 6,
-                color: "#1f78b4",
-                weight: 2,
-                fillColor: "#1f78b4",
-                fillOpacity: 0.8
+        $.getJSON(
+          "{{ url_for('static', filename='Data/fuel.geojson') }}",
+          function (data) {
+            var markerClusterFuelLayer = L.geoJSON(data, {
+              onEachFeature: function (feature, layer) {
+                layer.bindPopup(feature.properties.name);
+              },
             });
-        },
-        onEachFeature: function (feature, layer) {
-            var name = (feature.properties && feature.properties.name) ? feature.properties.name : "Unnamed";
-            layer.bindPopup("<b>" + name + "</b>");
-        }
-    }).addTo(mymap);
 
-    // Lägger till alla 1 km buffers
-    supermarketBufferLayer = L.geoJSON(
-        { type: "FeatureCollection", features: buffers },
-        {
-            style: {
-                color: "#ff9800",
-                weight: 2,
-                fillColor: "#ff9800",
-                fillOpacity: 0.12
-            }
-        }
-    ).addTo(mymap);
+            fuelBounds = markerClusterFuelLayer.getBounds();
 
-    // Highlightar "isolerade" mataffärer
-    isolatedSupermarketLayer = L.geoJSON(supermarkets, {
-        filter: function (feature, layer) {
-            var idx = supermarkets.features.indexOf(feature);
-            return isolatedIdx.has(idx);
-        },
-        pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, {
-                radius: 9,
-                color: "#00c853",
-                weight: 3,
-                fillColor: "#00e676",
-                fillOpacity: 0.9
+            var donutClusterFuelLayer = L.geoJSON(data, {
+              pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {
+                  brand: feature.properties.brand || "unknown", // Här används Leaflets standard-marker (blå nål)
+                }); // eftersom inget icon-objekt har definierats i L.marker() (från vår img-mapp).
+              },
+              onEachFeature: function (feature, layer) {
+                layer.bindPopup(feature.properties.name);
+              },
             });
-        },
-        onEachFeature: function (feature, layer) {
-            var name = (feature.properties && feature.properties.name) ? feature.properties.name : "Unnamed";
-            layer.bindPopup("<b>" + name + "</b><br>Not overlapping (1 km buffer)");
+
+            task5FuelMarkers.addLayer(markerClusterFuelLayer);
+            task5DonutMarkers.addLayer(donutClusterFuelLayer);
+          },
+        );
+
+        function showFuelMarkerCluster() {
+          if (mymap.hasLayer(task5DonutMarkers)) {
+            mymap.removeLayer(task5DonutMarkers);
+          }
+          if (!mymap.hasLayer(task5FuelMarkers)) {
+            mymap.addLayer(task5FuelMarkers);
+          }
+          if (fuelBounds) {
+            mymap.fitBounds(fuelBounds, { padding: [100, 100] });
+          }
         }
-    }).addTo(mymap);
-});
 
-/* ----------------------------TASK 4----------------------------- */
-
-var task4Bounds = [[61.13830880954627, 15.691546716243213], [61.1390229910075, 15.695426107028766], [61.133544283369744, 15.689345387518388], [61.13553902622228, 15.70020768171793]];
-var task4Overlay = L.imageOverlay("{{ url_for('static', filename='img/HawaiiKarta.png') }}", task4Bounds, { interactive: true }).bindPopup(
-    "<img src='{{ url_for('static', filename='img/HawaiiBadplats.jpg') }}' width='300px' alt='Hawaii Badplats'>"
-);
-
-
-var btnTask4 = document.getElementById("btnTask4");
-if (btnTask4) {
-    btnTask4.addEventListener("click", function () {
-        if (mymap.hasLayer(task4Overlay)) {
-            mymap.removeLayer(task4Overlay);
-        } else {
-            task4Overlay.addTo(mymap);
-            mymap.fitBounds(task4Bounds, { padding: [20, 20] });
+        function showFuelDonutCluster() {
+          if (mymap.hasLayer(task5FuelMarkers)) {
+            mymap.removeLayer(task5FuelMarkers);
+          }
+          if (!mymap.hasLayer(task5DonutMarkers)) {
+            mymap.addLayer(task5DonutMarkers);
+          }
+          if (fuelBounds) {
+            mymap.fitBounds(fuelBounds, { padding: [100, 100] });
+          }
         }
-    });
-}
 
-/* ----------------------------TASK 5----------------------------- */
-var fuelBounds; //hämtas senare via getBounds() på markerclusterlagret
-
-var task5FuelMarkers = L.markerClusterGroup();
-
-var task5DonutMarkers = L.DonutCluster({}, 
-{
-    key: 'brand', 
-    arcColorDict: 
-    {   
-        Shell: 'yellow',
-        CircleK: 'red',
-        OKQ8: 'blue',
-        Preem: 'green',
-        St1: 'orange',
-        unknown: 'gray'
-    }
-}
-);
-
-$.getJSON("{{ url_for('static', filename='Data/fuel.geojson') }}", function(data) 
-{
-    var markerClusterFuelLayer = L.geoJSON(data, {
-        onEachFeature: function (feature, layer) {
-            layer.bindPopup(feature.properties.name);
+        var btnTask5 = document.getElementById("btnTask5");
+        if (btnTask5) {
+          btnTask5.addEventListener("click", function () {
+            showFuelMarkerCluster();
+          });
         }
-    });
 
-    fuelBounds = markerClusterFuelLayer.getBounds();
-
-    var donutClusterFuelLayer = L.geoJSON(data, {
-        pointToLayer: function(feature, latlng) {
-            return L.marker(latlng, {
-                brand: feature.properties.brand || 'unknown' // Här används Leaflets standard-marker (blå nål) 
-            }); // eftersom inget icon-objekt har definierats i L.marker() (från vår img-mapp).
-        },
-        onEachFeature: function(feature, layer) {
-            layer.bindPopup(feature.properties.name);
+        var btnTask51 = document.getElementById("btnTask51");
+        if (btnTask51) {
+          btnTask51.addEventListener("click", function () {
+            showFuelDonutCluster();
+          });
         }
-    });
-
-    task5FuelMarkers.addLayer(markerClusterFuelLayer);
-    task5DonutMarkers.addLayer(donutClusterFuelLayer);
-
-});
-
-function showFuelMarkerCluster() 
-{
-    if (mymap.hasLayer(task5DonutMarkers)) {
-        mymap.removeLayer(task5DonutMarkers);
-    }
-    if (!mymap.hasLayer(task5FuelMarkers)) {
-        mymap.addLayer(task5FuelMarkers);
-    }
-    if (fuelBounds) {
-        mymap.fitBounds(fuelBounds, {padding: [100, 100]});
-    }
-}
-
-function showFuelDonutCluster() 
-{
-    if (mymap.hasLayer(task5FuelMarkers)) {
-        mymap.removeLayer(task5FuelMarkers);
-    }
-    if (!mymap.hasLayer(task5DonutMarkers)) {
-        mymap.addLayer(task5DonutMarkers);
-    }
-    if (fuelBounds) {
-        mymap.fitBounds(fuelBounds, {padding: [100, 100]});
-    }
-}
-
-var btnTask5 = document.getElementById("btnTask5");
-if (btnTask5) {
-    btnTask5.addEventListener("click", function () {
-        showFuelMarkerCluster();
-    });
-}
-
-var btnTask51 = document.getElementById("btnTask51");
-if (btnTask51) {
-    btnTask51.addEventListener("click", function () {
-        showFuelDonutCluster();
-    });
-}
-
-});
-            
-       </script>
-    </body>
+      });
+    </script>
+  </body>
 </html>
